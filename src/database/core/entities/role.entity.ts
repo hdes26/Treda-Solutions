@@ -15,13 +15,13 @@ export class Role extends BaseEntity {
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
   id: string;
 
-  @Column
+  @Column({ allowNull: false })
   @Length({ max: 50 })
   name: string;
 
-  @Column
+  @Column({ allowNull: true })
   @Length({ max: 100 })
-  email: string;
+  description: string;
 
   @HasMany(() => User)
   users: User[];

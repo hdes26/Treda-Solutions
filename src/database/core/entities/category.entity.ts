@@ -4,30 +4,25 @@ import {
   PrimaryKey,
   Length,
   DataType,
-  ForeignKey,
-  BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { BaseEntity } from './shared/base.entity';
-import { Role } from './role.entity';
+import { User } from './user.entity';
 
 @Table
-export class User extends BaseEntity {
+export class Category extends BaseEntity {
   @PrimaryKey
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
   id: string;
 
   @Column({ allowNull: false })
-  @Length({ max: 100 })
+  @Length({ max: 50 })
   name: string;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: true })
   @Length({ max: 100 })
-  email: string;
+  description: string;
 
-  @ForeignKey(() => Role)
-  @Column({ type: DataType.UUID })
-  roleId: string;
-
-  @BelongsTo(() => Role)
-  role: Role;
+  @HasMany(() => User)
+  users: User[];
 }
