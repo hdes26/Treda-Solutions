@@ -10,7 +10,7 @@ import { BaseEntity } from './shared/base.entity';
 import { Product } from './product.entity';
 import { Order } from './order.entity';
 
-@Table
+@Table({ tableName: 'order_product' })
 export class OrderProduct extends BaseEntity {
   @PrimaryKey
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })

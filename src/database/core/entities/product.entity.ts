@@ -3,7 +3,6 @@ import {
   Column,
   PrimaryKey,
   DataType,
-  Length,
   ForeignKey,
   BelongsTo,
   HasMany,
@@ -19,17 +18,15 @@ export class Product extends BaseEntity {
   id: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(50),
     allowNull: false,
   })
-  @Length({ max: 100 })
   name: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(100),
     allowNull: true,
   })
-  @Length({ max: 100 })
   description: string;
 
   @Column({

@@ -2,7 +2,6 @@ import {
   Table,
   Column,
   PrimaryKey,
-  Length,
   DataType,
   HasMany,
 } from 'sequelize-typescript';
@@ -16,17 +15,15 @@ export class Role extends BaseEntity {
   id: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(50),
     allowNull: false,
   })
-  @Length({ max: 50 })
   name: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(100),
     allowNull: true,
   })
-  @Length({ max: 100 })
   description: string;
 
   @HasMany(() => User)

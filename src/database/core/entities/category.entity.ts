@@ -3,7 +3,6 @@ import {
   Column,
   PrimaryKey,
   DataType,
-  Length,
   HasMany,
 } from 'sequelize-typescript';
 import { BaseEntity } from './shared/base.entity';
@@ -16,17 +15,15 @@ export class Category extends BaseEntity {
   id: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(50),
     allowNull: false,
   })
-  @Length({ max: 50 })
   name: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(100),
     allowNull: true,
   })
-  @Length({ max: 100 })
   description: string;
 
   @HasMany(() => Product)

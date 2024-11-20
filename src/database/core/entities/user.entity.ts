@@ -2,7 +2,6 @@ import {
   Table,
   Column,
   PrimaryKey,
-  Length,
   DataType,
   ForeignKey,
   BelongsTo,
@@ -19,18 +18,16 @@ export class User extends BaseEntity {
   id: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(50),
     allowNull: false,
   })
-  @Length({ max: 100 })
   name: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(50),
     allowNull: false,
     unique: true,
   })
-  @Length({ max: 100 })
   email: string;
 
   @ForeignKey(() => Role)
