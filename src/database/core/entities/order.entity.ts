@@ -3,53 +3,40 @@ import {
   Column,
   PrimaryKey,
   DataType,
-  Length,
   ForeignKey,
   BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
 import { BaseEntity } from './shared/base.entity';
-import { Category } from './category.entity';
+import { User } from './user.entity';
+import { OrderStatusEnum } from '../enum';
 import { OrderProduct } from './order-product.entity';
 
-@Table({ tableName: 'products' })
-export class Product extends BaseEntity {
+@Table({ tableName: 'orders' })
+export class Order extends BaseEntity {
   @PrimaryKey
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
   id: string;
 
   @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  @Length({ max: 100 })
-  name: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: true,
-  })
-  @Length({ max: 100 })
-  description: string;
-
-  @Column({
     type: DataType.DECIMAL(10, 2),
     allowNull: false,
   })
-  price: number;
+  total_price: number;
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.ENUM(...Object.values(OrderStatusEnum)),
     allowNull: false,
+    defaultValue: OrderStatusEnum.PENDING,
   })
-  stock: number;
+  status: OrderStatusEnum;
 
-  @ForeignKey(() => Category)
+  @ForeignKey(() => User)
   @Column({ type: DataType.UUID, allowNull: false })
-  category_id: string;
+  user_id: string;
 
-  @BelongsTo(() => Category)
-  category: Category;
+  @BelongsTo(() => User)
+  user: User;
 
   @HasMany(() => OrderProduct)
   order_products: OrderProduct[];

@@ -2,27 +2,33 @@ import {
   Table,
   Column,
   PrimaryKey,
-  Length,
   DataType,
+  Length,
   HasMany,
 } from 'sequelize-typescript';
 import { BaseEntity } from './shared/base.entity';
-import { User } from './user.entity';
+import { Product } from './product.entity';
 
-@Table
+@Table({ tableName: 'categories' })
 export class Category extends BaseEntity {
   @PrimaryKey
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
   id: string;
 
-  @Column({ allowNull: false })
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
   @Length({ max: 50 })
   name: string;
 
-  @Column({ allowNull: true })
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
   @Length({ max: 100 })
   description: string;
 
-  @HasMany(() => User)
-  users: User[];
+  @HasMany(() => Product)
+  products: Product[];
 }

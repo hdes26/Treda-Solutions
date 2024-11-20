@@ -9,17 +9,23 @@ import {
 import { BaseEntity } from './shared/base.entity';
 import { User } from './user.entity';
 
-@Table
+@Table({ tableName: 'roles' })
 export class Role extends BaseEntity {
   @PrimaryKey
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
   id: string;
 
-  @Column({ allowNull: false })
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
   @Length({ max: 50 })
   name: string;
 
-  @Column({ allowNull: true })
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
   @Length({ max: 100 })
   description: string;
 

@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
-import { Cat } from '../cats/cat.entity';
+import * as entities from './core/entities';
+const entitiesLists = Object.values(entities);
 
 export const databaseProviders = [
   {
@@ -13,7 +14,7 @@ export const databaseProviders = [
         password: 'password',
         database: 'nest',
       });
-      sequelize.addModels([Cat]);
+      sequelize.addModels(entitiesLists);
       await sequelize.sync();
       return sequelize;
     },
