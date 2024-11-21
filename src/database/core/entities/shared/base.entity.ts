@@ -11,7 +11,8 @@ import {
 @Table
 export class BaseEntity extends Model {
   @CreatedAt
-  @Column({ type: 'TIMESTAMP' })
+  @Default(new Date())
+  @Column({ type: 'TIMESTAMP', allowNull: false })
   created_at: Date;
 
   @UpdatedAt

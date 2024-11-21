@@ -7,6 +7,7 @@ import {
 } from 'sequelize-typescript';
 import { BaseEntity } from './shared/base.entity';
 import { User } from './user.entity';
+import { RoleNameEnum } from '../enum';
 
 @Table({ tableName: 'roles' })
 export class Role extends BaseEntity {
@@ -15,10 +16,11 @@ export class Role extends BaseEntity {
   id: string;
 
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.ENUM(...Object.values(RoleNameEnum)),
     allowNull: false,
+    unique: true,
   })
-  name: string;
+  name: RoleNameEnum;
 
   @Column({
     type: DataType.STRING(100),
