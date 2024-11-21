@@ -14,10 +14,10 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AuthService {
   constructor(
-    readonly configService: ConfigService,
+    private readonly configService: ConfigService,
+    private readonly jwtService: JwtService,
     @InjectModel(User)
     private readonly usersRepository: typeof User,
-    readonly jwtService: JwtService,
     private readonly logger: LoggerService,
   ) {}
 

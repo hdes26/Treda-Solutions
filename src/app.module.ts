@@ -8,6 +8,7 @@ import { BasicStrategy } from './utils/strategies/basic';
 import { UserModule } from './features/user/user.module';
 import { AuthModule } from './features/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { CategoryModule } from './features/category/category.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { JwtModule } from '@nestjs/jwt';
     DatabaseModule,
     UserModule,
     AuthModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService, BasicStrategy],

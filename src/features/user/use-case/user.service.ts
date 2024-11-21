@@ -98,24 +98,34 @@ export class UserService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const userFound = await this.usersRepository.findOne({
-      where: { id },
-    });
-    if (!userFound) {
-      throw new NotFoundException(`User with id ${id} not found.`);
+    try {
+      const userFound = await this.usersRepository.findOne({
+        where: { id },
+      });
+      if (!userFound) {
+        throw new NotFoundException(`User with id ${id} not found.`);
+      }
+      return await userFound.update(updateUserDto);
+    } catch (error) {
+      this.logger.error(UserService.name, error);
+      throw error;
     }
-    return await userFound.update(updateUserDto);
   }
 
   async remove(id: string): Promise<string> {
-    const userFound = await this.usersRepository.findOne({
-      where: { id },
-    });
-    if (!userFound) {
-      throw new NotFoundException(`User with id ${id} not found.`);
-    }
-    await userFound.update({ is_deleted: true, deleted_at: new Date() });
+    try {
+      const userFound = await this.usersRepository.findOne({
+        where: { id },
+      });
+      if (!userFound) {
+        throw new NotFoundException(`User with id ${id} not found.`);
+      }
+      await userFound.destroy();
 
-    return `User with id ${id} has been successfully deleted.`;
+      return `User with id ${id} has been successfully deleted.`;
+    } catch (error) {
+      this.logger.error(UserService.name, error);
+      throw error;
+    }
   }
 }
