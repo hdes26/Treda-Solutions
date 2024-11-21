@@ -30,6 +30,12 @@ export class User extends BaseEntity {
   })
   email: string;
 
+  @Column({
+    type: DataType.STRING(200),
+    allowNull: false,
+  })
+  password: string;
+
   @ForeignKey(() => Role)
   @Column({ type: DataType.UUID, allowNull: false })
   role_id: string;

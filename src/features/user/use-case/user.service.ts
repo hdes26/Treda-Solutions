@@ -4,6 +4,8 @@ import { UpdateUserDto } from '../core/dto/update-user.dto';
 import { Role, User } from 'src/database/core/entities';
 import { InjectModel } from '@nestjs/sequelize';
 import { LoggerService } from 'src/settings/logger';
+import { RoleNameEnum } from 'src/database/core/enum';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -15,17 +17,45 @@ export class UserService {
     private readonly logger: LoggerService,
   ) {}
 
-  async create({ role, ...createUserDto }: CreateUserDto): Promise<User> {
+  async createAdmin(createUserDto: CreateUserDto): Promise<User> {
     try {
+      const { name, email, password } = createUserDto;
+
       const roleFound = await this.rolesRepository.findOne({
-        where: { name: role },
+        where: { name: RoleNameEnum.ADMIN },
       });
       if (!roleFound) {
-        throw new NotFoundException(`Role with name ${role} not found.`);
+        throw new NotFoundException(`Role admin not found.`);
       }
       const newUser = await this.usersRepository.create({
-        ...createUserDto,
+        name,
+        email,
         role_id: roleFound.id,
+        password: await bcrypt.hash(password, 10),
+      });
+
+      return newUser;
+    } catch (error) {
+      this.logger.error(UserService.name, error);
+      throw error;
+    }
+  }
+
+  async createCustomer(createUserDto: CreateUserDto): Promise<User> {
+    try {
+      const { name, email, password } = createUserDto;
+
+      const roleFound = await this.rolesRepository.findOne({
+        where: { name: RoleNameEnum.CUSTOMER },
+      });
+      if (!roleFound) {
+        throw new NotFoundException(`Role admin not found.`);
+      }
+      const newUser = await this.usersRepository.create({
+        name,
+        email,
+        role_id: roleFound.id,
+        password: await bcrypt.hash(password, 10),
       });
 
       return newUser;
@@ -37,7 +67,15 @@ export class UserService {
 
   async findAll(): Promise<User[]> {
     try {
-      return await this.usersRepository.findAll();
+      return await this.usersRepository.findAll({
+        include: [
+          {
+            model: Role,
+            where: { name: RoleNameEnum.CUSTOMER },
+            required: true,
+          },
+        ],
+      });
     } catch (error) {
       this.logger.error(UserService.name, error);
       throw error;
