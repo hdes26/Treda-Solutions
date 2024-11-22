@@ -54,11 +54,11 @@ La base de datos está preconfigurada con datos iniciales gracias a los seeders 
 
 3. **Usuarios**:
    - **Admin User**:
-     - **Correo**: `admin@example.com`
+     - **Correo**: `admin@treda.com`
      - **Contraseña**: `Qwerty123*`
      - Asociado al rol `ADMIN`.
    - **Customer User**:
-     - **Correo**: `customer@example.com`
+     - **Correo**: `customer@treda.com`
      - **Contraseña**: `Qwerty123*`
      - Asociado al rol `CUSTOMER`.
 
