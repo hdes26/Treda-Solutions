@@ -23,6 +23,7 @@ async function bootstrap() {
       'Prueba tecnica para la vacante de nodejs developer en Treda',
     )
     .addBasicAuth()
+    .addBearerAuth()
     .setVersion('0.0.1')
     .build();
   const document = SwaggerModule.createDocument(app, options);

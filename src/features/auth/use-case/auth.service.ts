@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { LoginDto } from '../core/dto/login.dto';
 import { InjectModel } from '@nestjs/sequelize';
-import { User } from 'src/database/core/entities';
+import { Role, User } from 'src/database/core/entities';
 import { LoggerService } from 'src/settings/logger';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -26,6 +26,11 @@ export class AuthService {
       const { email, password } = loginDto;
       const userFound = await this.usersRepository.findOne({
         where: { email },
+        include: [
+          {
+            model: Role,
+          },
+        ],
       });
       if (!userFound) {
         throw new NotFoundException(`User not found.`);
@@ -46,7 +51,7 @@ export class AuthService {
   }
 
   private async getTokens(user: User): Promise<string> {
-    const payload = { id: user.id, name: user.name };
+    const payload = { id: user.id, name: user.name, roles: user.role.name };
     const [accessToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: this.configService.get<string>('JWT_ACCESS_KEY'),

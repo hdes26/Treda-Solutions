@@ -9,6 +9,7 @@ import { UserModule } from './features/user/user.module';
 import { AuthModule } from './features/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { CategoryModule } from './features/category/category.module';
+import { AccessTokenStrategy } from './utils/strategies/jwt';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { CategoryModule } from './features/category/category.module';
     CategoryModule,
   ],
   controllers: [AppController],
-  providers: [AppService, BasicStrategy],
+  providers: [AppService, BasicStrategy, AccessTokenStrategy],
 })
 export class AppModule {}
