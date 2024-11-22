@@ -3,7 +3,7 @@
     "username": "postgres",
     "password": "vo5uB9viNm8LV27qVz4S",
     "database": "postgres",
-    "host": "localhost",
+    "host": "treda.postgres",
     "dialect": "postgres"
   }
 }

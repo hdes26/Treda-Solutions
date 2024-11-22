@@ -5,7 +5,7 @@ import { Role, User } from 'src/database/core/entities';
 import { InjectModel } from '@nestjs/sequelize';
 import { LoggerService } from 'src/settings/logger';
 import { RoleNameEnum } from 'src/database/core/enum';
-import * as bcrypt from 'bcrypt';
+import { encryptPassword } from 'src/utils/functions';
 
 @Injectable()
 export class UserService {
@@ -31,7 +31,7 @@ export class UserService {
         name,
         email,
         role_id: roleFound.id,
-        password: await bcrypt.hash(password, 10),
+        password: encryptPassword(password),
       });
 
       return newUser;
@@ -55,7 +55,7 @@ export class UserService {
         name,
         email,
         role_id: roleFound.id,
-        password: await bcrypt.hash(password, 10),
+        password: encryptPassword(password),
       });
 
       return newUser;

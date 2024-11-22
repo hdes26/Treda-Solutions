@@ -1,4 +1,4 @@
-import * as bcryptjs from 'bcrypt';
+import * as bcryptjs from 'bcryptjs';
 
 export function encryptPassword(password: string) {
   return bcryptjs.hashSync(password, 10);

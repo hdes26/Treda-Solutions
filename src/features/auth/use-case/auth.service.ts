@@ -7,9 +7,9 @@ import { LoginDto } from '../core/dto/login.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Role, User } from 'src/database/core/entities';
 import { LoggerService } from 'src/settings/logger';
-import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { comparePassword } from 'src/utils/functions';
 
 @Injectable()
 export class AuthService {
@@ -35,7 +35,7 @@ export class AuthService {
       if (!userFound) {
         throw new NotFoundException(`User not found.`);
       }
-      const isMatch = await bcrypt.compare(password, userFound.password);
+      const isMatch = comparePassword(password, userFound.password);
 
       if (!isMatch) {
         throw new BadRequestException('e-mail or password invalid');
