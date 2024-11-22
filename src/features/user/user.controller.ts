@@ -13,17 +13,17 @@ import { CreateUserDto } from './core/dto/create-user.dto';
 import { UpdateUserDto } from './core/dto/update-user.dto';
 import {
   ApiBadGatewayResponse,
-  ApiBasicAuth,
+  ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { BasicGuard } from 'src/utils/guards/basic';
+import { AccessTokenGuard } from 'src/utils/guards/jwt';
+import { Roles, RolesGuard } from 'src/utils/guards/roles';
+import { RoleNameEnum } from 'src/database/core/enum';
 
 @ApiTags('user')
 @Controller('user')
-@ApiBasicAuth()
-@UseGuards(BasicGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -55,6 +55,9 @@ export class UserController {
   })
   @ApiOkResponse({ description: 'Get customer users' })
   @ApiBadGatewayResponse({ description: 'Something happened' })
+  @UseGuards(AccessTokenGuard, RolesGuard)
+  @ApiBearerAuth()
+  @Roles(RoleNameEnum.ADMIN)
   @Get()
   findAll() {
     return this.userService.findAll();
@@ -66,6 +69,8 @@ export class UserController {
   })
   @ApiOkResponse({ description: 'Get customer user by id' })
   @ApiBadGatewayResponse({ description: 'Something happened' })
+  @ApiBearerAuth()
+  @Roles(RoleNameEnum.CUSTOMER, RoleNameEnum.ADMIN)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.userService.findOne(id);
@@ -77,6 +82,8 @@ export class UserController {
   })
   @ApiOkResponse({ description: 'User updated' })
   @ApiBadGatewayResponse({ description: 'Something happened' })
+  @ApiBearerAuth()
+  @Roles(RoleNameEnum.CUSTOMER, RoleNameEnum.ADMIN)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return await this.userService.update(id, updateUserDto);
@@ -88,6 +95,8 @@ export class UserController {
   })
   @ApiOkResponse({ description: 'User removed' })
   @ApiBadGatewayResponse({ description: 'Something happened' })
+  @ApiBearerAuth()
+  @Roles(RoleNameEnum.ADMIN)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.userService.remove(id);
