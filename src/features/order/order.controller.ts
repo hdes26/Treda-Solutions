@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { OrderService } from './use-case/order.service';
 import { CreateOrderDto } from './core/dto/create-order.dto';
-import { UpdateOrderDto } from './core/dto/update-order.dto';
+import { UpdateOrderStatusDto } from './core/dto/update-order-status.dto';
 import {
   ApiBadGatewayResponse,
   ApiBearerAuth,
@@ -22,6 +22,7 @@ import {
 import { AccessTokenGuard } from 'src/utils/guards/jwt';
 import { Roles, RolesGuard } from 'src/utils/guards/roles';
 import { RoleNameEnum } from 'src/database/core/enum';
+import { FindOrdersDto } from './core/dto/find-order.dto';
 
 @UseGuards(AccessTokenGuard, RolesGuard)
 @ApiBearerAuth()
@@ -53,8 +54,8 @@ export class OrderController {
   @ApiBadGatewayResponse({ description: 'Something happened' })
   @Roles(RoleNameEnum.ADMIN)
   @Get()
-  async findAll() {
-    return await this.orderService.findAll();
+  async findAll(@Query() findOrdersDto: FindOrdersDto) {
+    return await this.orderService.findAll(findOrdersDto);
   }
 
   @ApiOperation({
@@ -82,18 +83,19 @@ export class OrderController {
   }
 
   @ApiOperation({
-    summary: 'Update order',
-    description: 'Update order by id.',
+    summary: 'Update order status',
+    description:
+      'Update order status by id. The admin will provide the new status',
   })
   @ApiOkResponse({ description: 'Order updated' })
   @ApiBadGatewayResponse({ description: 'Something happened' })
-  @Roles(RoleNameEnum.CUSTOMER, RoleNameEnum.ADMIN)
-  @Patch(':id')
+  @Roles(RoleNameEnum.ADMIN)
+  @Patch('status/:id')
   async update(
     @Param('id') id: string,
-    @Body() updateOrderDto: UpdateOrderDto,
+    @Body() updateOrderStatusDto: UpdateOrderStatusDto,
   ) {
-    return await this.orderService.update(id, updateOrderDto);
+    return await this.orderService.update(id, updateOrderStatusDto);
   }
 
   @ApiOperation({

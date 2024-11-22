@@ -4,11 +4,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateOrderDto } from '../core/dto/create-order.dto';
-import { UpdateOrderDto } from '../core/dto/update-order.dto';
+import { UpdateOrderStatusDto } from '../core/dto/update-order-status.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Order, Product, User, OrderProduct } from 'src/database/core/entities';
 import { LoggerService } from 'src/settings/logger';
 import { OrderStatusEnum } from 'src/database/core/enum';
+import { FindOrdersDto } from '../core/dto/find-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -104,56 +105,104 @@ export class OrderService {
 
       return order;
     } catch (error) {
-      this.logger.error('Error creating order:', error.message);
+      this.logger.error(OrderService.name, error);
       throw error;
     }
   }
 
-  async findAll() {
-    return this.orderRepository.findAll({
-      include: [{ model: User }, { model: OrderProduct, include: [Product] }],
-    });
+  async findAll(findOrdersDto: FindOrdersDto) {
+    const { page = 1, limit = 10, status } = findOrdersDto;
+
+    try {
+      const offset = (page - 1) * limit;
+
+      const whereClause: any = {};
+      if (status) {
+        whereClause.status = status;
+      }
+
+      const { rows, count } = await this.orderRepository.findAndCountAll({
+        where: whereClause,
+        include: [{ model: User }, { model: OrderProduct, include: [Product] }],
+        limit,
+        offset,
+        order: [['created_at', 'DESC']],
+      });
+
+      return {
+        data: rows,
+        pagination: {
+          total: count,
+          page,
+          limit,
+          totalPages: Math.ceil(count / limit),
+        },
+      };
+    } catch (error) {
+      this.logger.error(OrderService.name, error.message);
+      throw error;
+    }
   }
 
   async findAllUsersOrders(userId: string) {
-    const user = await this.usersRepository.findByPk(userId);
-    if (!user) {
-      throw new NotFoundException(`User with id ${userId} not found.`);
-    }
+    try {
+      const user = await this.usersRepository.findByPk(userId);
+      if (!user) {
+        throw new NotFoundException(`User with id ${userId} not found.`);
+      }
 
-    return this.orderRepository.findAll({
-      where: { user_id: userId },
-      include: [{ model: OrderProduct, include: [Product] }],
-    });
+      return this.orderRepository.findAll({
+        where: { user_id: userId },
+        include: [{ model: OrderProduct, include: [Product] }],
+      });
+    } catch (error) {
+      this.logger.error(OrderService.name, error);
+      throw error;
+    }
   }
 
   async findOne(id: string) {
-    const order = await this.orderRepository.findByPk(id, {
-      include: [{ model: User }, { model: OrderProduct, include: [Product] }],
-    });
+    try {
+      const order = await this.orderRepository.findByPk(id, {
+        include: [{ model: User }, { model: OrderProduct, include: [Product] }],
+      });
 
-    if (!order) {
-      throw new NotFoundException(`Order with id ${id} not found.`);
+      if (!order) {
+        throw new NotFoundException(`Order with id ${id} not found.`);
+      }
+
+      return order;
+    } catch (error) {
+      this.logger.error(OrderService.name, error);
+      throw error;
     }
-
-    return order;
   }
 
-  async update(id: string, updateOrderDto: UpdateOrderDto) {
-    const order = await this.orderRepository.findByPk(id);
-    if (!order) {
-      throw new NotFoundException(`Order with id ${id} not found.`);
-    }
+  async update(id: string, updateOrderStatusDto: UpdateOrderStatusDto) {
+    try {
+      const order = await this.orderRepository.findByPk(id);
+      if (!order) {
+        throw new NotFoundException(`Order with id ${id} not found.`);
+      }
 
-    return order.update(updateOrderDto);
+      return order.update(updateOrderStatusDto);
+    } catch (error) {
+      this.logger.error(OrderService.name, error);
+      throw error;
+    }
   }
 
   async remove(id: string) {
-    const order = await this.orderRepository.findByPk(id);
-    if (!order) {
-      throw new NotFoundException(`Order with id ${id} not found.`);
-    }
+    try {
+      const order = await this.orderRepository.findByPk(id);
+      if (!order) {
+        throw new NotFoundException(`Order with id ${id} not found.`);
+      }
 
-    await order.destroy();
+      await order.destroy();
+    } catch (error) {
+      this.logger.error(OrderService.name, error);
+      throw error;
+    }
   }
 }
