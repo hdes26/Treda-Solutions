@@ -24,15 +24,12 @@ export class CreateProductDto {
   description: string;
 
   @ApiProperty()
-  @IsDecimal(
-    { decimal_digits: '0,2' },
-    {
-      message:
-        'The price must be a decimal number with up to 2 decimal places.',
-    },
+  @IsNumber(
+    { allowInfinity: false, allowNaN: false },
+    { message: 'The price must be a valid number.' },
   )
   @IsNotEmpty()
-  price: string;
+  price: number;
 
   @ApiProperty()
   @IsNumber()

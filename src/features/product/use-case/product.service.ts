@@ -44,6 +44,7 @@ export class ProductService {
         description,
         price,
         stock,
+        category_id: categoryFound.id,
       });
     } catch (error) {
       this.logger.error(ProductService.name, error);
