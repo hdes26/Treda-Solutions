@@ -42,8 +42,8 @@ export class CategoryController {
   }
 
   @ApiOperation({
-    summary: 'Get categories users',
-    description: 'Get categories users',
+    summary: 'Get categories',
+    description: 'Get categories',
   })
   @ApiOkResponse({ description: 'Get categories' })
   @ApiBadGatewayResponse({ description: 'Something happened' })
