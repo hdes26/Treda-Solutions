@@ -64,10 +64,19 @@ La base de datos está preconfigurada con datos iniciales gracias a los seeders 
 
 Esto permite probar el sistema de inmediato sin nece  sidad de crear los datos manualmente.
 
+## Imagen Docker 🐳
+
+La imagen Docker del servidor se encuentra disponible en Docker Hub. Para obtenerla, utilice el siguiente comando:
+Quiero destacar que hace falta levantar una base de datos datos para poder usar esta imagen.
+
+```bash
+docker pull hdes26/treda-solution-prueba-server:latest
+```
+
 ## Diferencias entre la Rama `min` y la Rama `v2` 🔄
 
 ### Rama `main`
-La rama `min` contiene una aplicación funcional que implementa las bases de la solución. Esta versión de la aplicación es el resultado de mi experiencia adquirida a lo largo del tiempo. Aunque es completamente funcional, la arquitectura y los principios de Clean Code no son tan estrictos como en la rama `v2`.
+La rama `main` contiene una aplicación funcional que implementa las bases de la solución. Esta versión de la aplicación es el resultado de mi experiencia adquirida a lo largo del tiempo. Aunque es completamente funcional, la arquitectura y los principios de Clean Code no son tan estrictos como en la rama `v2`.
 
 ### Rama `v2`
 En la rama `v2` encontrarás una versión más robusta y mejor estructurada de la aplicación. Esta rama aplica de manera más estricta los principios de Clean Code y presenta una arquitectura más escalable y modular. Aún no está completamente terminada, pero representa un enfoque más maduro en la construcción de software.
