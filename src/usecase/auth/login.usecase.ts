@@ -42,7 +42,13 @@ export class LoginUsecase implements ILoginUsecase {
 
       const token = await this.getTokens(userFound);
 
-      return { user: userFound, token };
+      const userResponse = {
+        id: userFound.id,
+        name: userFound.name,
+        email: userFound.email,
+      };
+
+      return { user: userResponse, token };
     } catch (error) {
       this.logger.error(LoginUsecase.name, error);
       throw error;

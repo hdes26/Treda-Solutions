@@ -4,7 +4,7 @@ import { ILoginUsecase } from '@domain/ports';
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('auth')
+@ApiTags('AUTH')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly loginUseCase: ILoginUsecase) {}
