@@ -1,6 +1,6 @@
 const path = require('path');
 
 module.exports = {
-  config: path.resolve('src/database/config.json'),
-  'seeders-path': path.resolve('dist/database/core/seeders'),
+  config: path.resolve('./config.json'),
+  'seeders-path': path.resolve('dist/infrastructure/seeders'),
 };
