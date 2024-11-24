@@ -73,7 +73,7 @@ Quiero destacar que hace falta levantar una base de datos datos para poder usar 
 docker pull hdes26/treda-solution-prueba-server:latest
 ```
 
-## Diferencias entre la Rama `min` y la Rama `v2` 🔄
+## Diferencias entre la Rama `main` y la Rama `v2` 🔄
 
 ### Rama `main`
 La rama `main` contiene una aplicación funcional que implementa las bases de la solución. Esta versión de la aplicación es el resultado de mi experiencia adquirida a lo largo del tiempo. Aunque es completamente funcional, la arquitectura y los principios de Clean Code no son tan estrictos como en la rama `v2`.
